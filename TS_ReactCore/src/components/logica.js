@@ -1,4 +1,4 @@
-export function transformCancion(canciones){
+export function transformCanciones(canciones){
   //comrpueba si canciones realmente es un array
   if(!Array.isArray(canciones)) return [];  //devuelve un array vacío si no
 
