@@ -1,4 +1,4 @@
-export default function Estado({ estado, mensaje}){ {/* llega el tipo de estado, devuelve el mensaje de error */} 
+export default function Estado({ tipo, mensaje }){ {/* llega el tipo de estado, devuelve el mensaje de error */} 
 
     if(tipo == 'cargando'){
         return(
