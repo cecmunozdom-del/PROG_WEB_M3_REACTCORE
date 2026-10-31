@@ -1,3 +1,5 @@
+//main.lsx -> arranca React y monta la app en el DOM
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
