@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { fetchCanciones } from '../components/api.js';
-import { transformCanciones } from '../components/logica.js';
+import { fetchCanciones } from '../api.js';
+import { transformCanciones } from '../logica.js';
 
 export function useCanciones() {
     const [canciones, setCanciones] = useState([]); {/*estado de canciones que comienza como array vacío*/}

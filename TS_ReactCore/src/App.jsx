@@ -10,7 +10,7 @@ import Estado from './components/Estado'
 
 //import de la función de hook personalizada, y la función de filtrado
 import { useCanciones} from './hooks/useCanciones'
-import { filtrandoCanciones } from './components/logica'
+import { filtrandoCanciones } from './logica'
 
 export default function App() {
   
