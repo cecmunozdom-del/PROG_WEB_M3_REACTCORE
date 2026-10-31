@@ -1,122 +1,72 @@
+//App.jsx -> componente raíz del proyecto
+
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+//import de componentes
+import Header from "./components/Header"
+import Buscador from "./components/Buscador"
+import TarjetaCancion from './components/TarjetaCancion'
+import Estado from './components/Estado'
 
+//import de la función de hook personalizada, y la función de filtrado
+import { useCanciones} from './hooks/useCanciones'
+import { filtrandoCanciones } from './components/logica'
+
+export default function App() {
+  
+  //posibles estados de la app
+  const { canciones, cargando, error } = useCanciones(); {/* este objeto con variables lo recibimos del hook useCanciones() */}
+  const [busqueda, setBusqueda] = useState(''); {/* estado de la búsqueda, comenzará como un string vacío */}
+
+  //valor derivado -> no hace falta hacer otro useState para canciones filtradas
+  //con la función de filtrandoCanciones() se actualiza con cada búsqueda en cada render
+  const cancionesFiltradas = filtrandoCanciones(canciones, busqueda);
+
+  //para borrar caché
+  const manejarLimpiarCache = () => {
+    localStorage.clear();
+    window.alert("Caché eliminada")
+    window.location.reload();
+  };
+
+  //se devuelve la estructura de HTML
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div id="app">
+      <Header />
 
-      <div className="ticks"></div>
+      <main>
+        <div className="contenedor">
+          {/*le pasamos props al buscador -> valor de la búsqueda, la función para actualizar el texto, y para limpiar la caché*/}
+          <Buscador
+            textoBusqueda={busqueda}
+            onCambioBusqueda={setBusqueda}
+            onLimpiarCache={manejarLimpiarCache}
+          />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          {/*cambios del estado de las búsquedas (cargando - error - vacío/sin resultados) */}
+          {/*&& -> si la condición izquierda es verdadera, se evalúa y se hace lo de la derecha*/}
+          {cargando && <Estado tipo="cargando" />}
+          
+          {error && <Estado tipo="error" mensaje={error} />}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          {!cargando && !error && cancionesFiltradas.length === 0 && (
+            <Estado tipo="vacio" />
+          )}
+
+          {/*ahora en caso de que SÍ se muestren canciones: */}
+          {!cargando && !error && cancionesFiltradas.length > 0 && (
+            <div id="contenedorCanciones">
+              {/* por cada canción de las filtrdas, se devuelve su componente TarjetaCancion */}
+              {/*grid de tarjetas, podemos usar key ya que la lista es estática*/}
+              {cancionesFiltradas.map((cancion) => (
+                <TarjetaCancion key={cancion.id} cancion={cancion} />
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
 }
 
-export default App
+
