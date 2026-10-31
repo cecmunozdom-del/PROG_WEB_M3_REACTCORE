@@ -9,7 +9,7 @@ export default function Estado({ tipo, mensaje }){ {/* llega el tipo de estado, 
         );
     }
 
-    if(estado == 'vacio'){
+    if(tipo == 'vacio'){
         return(
             <div className="cajaEstado">
                 <p>🔍 No se han encontrado canciones que coincidan con la búsqueda. </p>
@@ -17,7 +17,7 @@ export default function Estado({ tipo, mensaje }){ {/* llega el tipo de estado, 
         );
     }
     
-    if(estado == 'error'){
+    if(tipo == 'error'){
         return(
             <div className="cajaEstado error">
                 <p>⚠️<b>¡Ups! Algo salió mal: </b> {mensaje}</p>

@@ -37,7 +37,6 @@ export function useCanciones() {
         cargandoDatos();
     }, []); {/*[] se asegura de que solo se ejcute una única vez (al montar el componente)*/}
 
-    return { canciones, cargando, error };  {/*este hook devuelve un objeto con las variables de estado
-        */}
+    return { canciones, cargando, error };  {/*este hook devuelve un objeto con las variables de estado*/}
 
 }
