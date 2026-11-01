@@ -26,4 +26,5 @@ export default function Estado({ tipo, mensaje }){ {/* llega el tipo de estado, 
     }
 
     {/* si no fuera ninguno de los 3 estados se devuelve null */} 
+    return null;
 }

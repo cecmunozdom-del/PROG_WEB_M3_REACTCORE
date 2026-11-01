@@ -1,4 +1,4 @@
-const limit = 500; //límite de canciones
+const limit = 200; //límite de canciones
 //el search es taylor+swift, y con el entity=song solo devuelve canciones
 const API_URL = `https://itunes.apple.com/search?term=taylor+swift&entity=song&limit=${limit}`;
 const CACHE_KEY = 'taylorSongsCache';
